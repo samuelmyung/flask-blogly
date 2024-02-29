@@ -34,6 +34,6 @@ class User(db.Model):
 
     image_url = db.Column(
         # Could add a default img
-        db.string(100),
+        db.Text,
         unique=True)
 

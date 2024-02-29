@@ -1,6 +1,17 @@
-{% extends base.html %}
+{% extends 'base.html' %}
 
-{% block title %}{% endblock %}
+{% block title %} {{ user.first_name }} {{ user.last_name }} {% endblock %}
 
 {% block content %}
+
+{% if user.image_url %}
+<img src="{{ user.image_url }}" style="display: inline-block" class="w-25 h-25">
+{% endif %}
+
+<div style="display: inline">
+  <h1 style="display: inline-block" class="w-100">{{ user.first_name }} {{ user.last_name }}</h1>
+
+  <a class="btn btn-primary">Edit User</a>
+  <a class="btn btn-danger">Delete User</a>
+</div>
 {% endblock %}

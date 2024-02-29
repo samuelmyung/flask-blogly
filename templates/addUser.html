@@ -1,6 +1,34 @@
-{% extends base.html %}
+{% extends 'base.html' %}
 
-{% block title %}{% endblock %}
+{% block title %} Add Users {% endblock %}
 
 {% block content %}
+
+<h1 class="ms-3 mb-3">Create A User</h1>
+
+<form method="POST" class="ms-3">
+  <label for="first_name" class="mb-3">First Name</label>
+  <input
+    type="text"
+    name="first_name"
+    placeholder="Enter First Name"
+    class="w-25"><br>
+
+  <label for="last_name" class="mb-3">Last Name</label>
+  <input
+    type="text"
+    name="last_name"
+    placeholder="Enter Last Name"
+    class="w-25"><br>
+
+  <label for="img_url" class="mb-3">Image URL</label>
+  <input
+    type="text"
+    name="img_url"
+    placeholder="Provide an image of this user"
+    class="w-25"><br>
+
+  <input type="submit" value="Add User" class="btn btn-primary">
+</form>
+
 {% endblock %}
