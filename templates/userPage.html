@@ -15,13 +15,28 @@
     {{ user.first_name }} {{ user.last_name }}
   </h1>
 
-  <a href="/users/{{ user.id }}/edit" class="btn btn-primary">Edit User</a>
+  <!-- <a href="/users/{{ user.id }}/edit" class="btn btn-primary">Edit User</a>
 
   <form
     action="/users/{{ user.id }}/delete"
     method ="POST"
     style="display: inline;">
     <input type="submit" class="btn btn-danger" value="Delete User">
+  </form> -->
+
+  <form>
+    <input
+      type="submit"
+      class="btn btn-primary"
+      formaction="/users/{{ user.id }}/edit"
+      formmethod="GET"
+      value="Edit User">
+    <input
+      type="submit"
+      class="btn btn-danger"
+      formaction="/users/{{ user.id }}/delete"
+      formmethod="POST"
+      value="Delete User">
   </form>
 
 </div>
