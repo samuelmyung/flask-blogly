@@ -8,21 +8,13 @@
 <img src="{{ user.image_url }}" style="display: inline-block" class="w-25 h-25">
 {% endif %}
 
+<!-- Styling question -->
 <div style="display: inline">
   <h1
     style="display: inline-block"
     class="w-100">
     {{ user.first_name }} {{ user.last_name }}
   </h1>
-
-  <!-- <a href="/users/{{ user.id }}/edit" class="btn btn-primary">Edit User</a>
-
-  <form
-    action="/users/{{ user.id }}/delete"
-    method ="POST"
-    style="display: inline;">
-    <input type="submit" class="btn btn-danger" value="Delete User">
-  </form> -->
 
   <form>
     <input
@@ -38,6 +30,18 @@
       formmethod="POST"
       value="Delete User">
   </form>
+
+  <h3>Posts</h3>
+
+  <ul>
+  {% for post in user.posts %}
+  <li>
+    <a href="/posts/{{post.id}}">{{ post.title }}</a>
+  </li>
+  {% endfor %}
+  </ul>
+
+  <a href="/users/{{user.id}}/posts/new" class="btn btn-primary">Add Post</a>
 
 </div>
 {% endblock %}

@@ -25,7 +25,7 @@ def redirect_home():
 def show_users():
     """Shows users page"""
 
-    user_list = User.query.all().order_by('last_name', 'first_name')
+    user_list = User.query.order_by('last_name', 'first_name').all()
     return render_template('users.html', users=user_list)
 
 
@@ -91,3 +91,10 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+@app.get('/users/<int:user_id>/posts/new')
+def show_add_post_page(user_id):
+    """Shows add post page"""
+
+    user = User.query.get_or_404(user_id)
+    return render_template('addPost.html', user = user)
