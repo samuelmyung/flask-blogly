@@ -1,6 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %}{% endblock %}
+{% block title %}Edit User{% endblock %}
 
 {% block content %}
+<h1 class="ms-3 mb-3">Edit A User</h1>
+
+<form method="POST" class="ms-3">
+  <label for="first_name" class="mb-3">First Name</label>
+  <input
+    type="text"
+    name="first_name"
+    value="{{user.first_name}}"
+    placeholder="Enter First Name"
+    class="w-25"><br>
+
+  <label for="last_name" class="mb-3">Last Name</label>
+  <input
+    type="text"
+    name="last_name"
+    value="{{user.last_name}}"
+    placeholder="Enter Last Name"
+    class="w-25"><br>
+
+  <label for="img_url" class="mb-3">Image URL</label>
+  <input
+    type="text"
+    name="img_url"
+    value="{{user.image_url}}"
+    placeholder="Provide an image of this user"
+    class="w-25"><br>
+
+  <a href="/users/{{user.id}}" class="btn btn-secondary">Cancel</a>
+  <input type="submit" value="Save" class="btn btn-success">
+</form>
 {% endblock %}

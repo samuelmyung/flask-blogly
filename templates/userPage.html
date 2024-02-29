@@ -9,9 +9,20 @@
 {% endif %}
 
 <div style="display: inline">
-  <h1 style="display: inline-block" class="w-100">{{ user.first_name }} {{ user.last_name }}</h1>
+  <h1
+    style="display: inline-block"
+    class="w-100">
+    {{ user.first_name }} {{ user.last_name }}
+  </h1>
 
-  <a class="btn btn-primary">Edit User</a>
-  <a class="btn btn-danger">Delete User</a>
+  <a href="/users/{{ user.id }}/edit" class="btn btn-primary">Edit User</a>
+
+  <form
+    action="/users/{{ user.id }}/delete"
+    method ="POST"
+    style="display: inline;">
+    <input type="submit" class="btn btn-danger" value="Delete User">
+  </form>
+
 </div>
 {% endblock %}

@@ -61,3 +61,24 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("test1_first", html)
             self.assertIn("test1_last", html)
+
+    def test_add_user_form(self):
+        with app.test_client() as c:
+            resp = c.get("/users/new")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("This is add user page button for test", html)
+
+    def test_root_redirect(self):
+        with app.test_client() as c:
+            resp = c.get("/")
+            self.assertEqual(resp.status_code, 302)
+            self.assertEqual(resp.location, '/users')
+
+    def test_edit_users(self):
+        with app.test_client() as c:
+            resp = c.post("/users/1/edit", data = {first_name: })
+            self.assertEqual(resp.status_code, 302)
+            html = resp.get_data(as_text=True)
+            self.assertIn("test1_first", html)
+            self.assertIn("test1_last", html)
