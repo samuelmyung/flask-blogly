@@ -38,6 +38,8 @@ class User(db.Model):
         nullable=False,
         default=DEFAULT_IMAGE_URL)
 
+    # posts = db.relationship('Post', backref='user')
+
 class Post(db.Model):
     """Post."""
 

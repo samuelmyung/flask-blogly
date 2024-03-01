@@ -1,9 +1,11 @@
-from models import DEFAULT_IMAGE_URL, User
+import os
+os.environ["DATABASE_URL"] = "postgresql:///blogly_test"
+
+from models import DEFAULT_IMAGE_URL, User, Post
 from app import app, db
 from unittest import TestCase
-import os
-
-os.environ["DATABASE_URL"] = "postgresql:///blogly_test"
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+#     "DATABASE_URL", 'postgresql:///blogly_blogly_test')
 
 
 # Make Flask errors be real errors, rather than HTML pages with error info
@@ -31,6 +33,7 @@ class UserViewTestCase(TestCase):
         # As you add more models later in the exercise, you'll want to delete
         # all of their records before each test just as we're doing with the
         # User model below.
+        Post.query.delete()
         User.query.delete()
 
         test_user = User(
@@ -42,11 +45,21 @@ class UserViewTestCase(TestCase):
         db.session.add(test_user)
         db.session.commit()
 
+        test_post = Post(
+            title="testing title",
+            content="testing content",
+            user_id=test_user.id,
+        )
+
+        db.session.add(test_post)
+        db.session.commit()
+
         # We can hold onto our test_user's id by attaching it to self (which is
         # accessible throughout this test class). This way, we'll be able to
         # rely on this user in our tests without needing to know the numeric
         # value of their id, since it will change each time our tests are run.
         self.user_id = test_user.id
+        self.post_id = test_post.id
 
     def tearDown(self):
         """Clean up any fouled transaction."""
@@ -109,3 +122,63 @@ class UserViewTestCase(TestCase):
             self.assertEqual(user.first_name, "test2_first")
             self.assertEqual(user.last_name, "test2_last")
             self.assertEqual(user.image_url, DEFAULT_IMAGE_URL)
+
+    def test_add_post_page(self):
+        """Testing showing create post form"""
+
+        with app.test_client() as c:
+            resp = c.get(f"/users/{self.user_id}/posts/new")
+            self.assertEqual(resp.status_code, 200)
+
+            html = resp.get_data(as_text=True)
+            self.assertIn("This is a test for the addpost.html page", html)
+
+    def test_post_page(self):
+        """Testing showing a post page"""
+
+        with app.test_client() as c:
+            resp = c.get(f"/posts/{self.post_id}")
+            self.assertEqual(resp.status_code, 200)
+
+            html = resp.get_data(as_text=True)
+            self.assertIn("testing title", html)
+            self.assertIn("testing content", html)
+
+            post=Post.query.get(self.post_id)
+            self.assertIn(f"{post.user.first_name} {post.user.last_name}", html)
+
+    def test_create_post(self):
+        """Testing creating a new post"""
+
+        with app.test_client() as c:
+            resp = c.post(f'/users/{self.user_id}/posts/new', data={
+                "title": "This is a test title",
+                "content": "This is test content",
+                "user_id": self.user_id,
+            },
+            follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+
+            html = resp.get_data(as_text=True)
+            self.assertIn("This is a test title", html)
+            self.assertIn("This is to test we are in the User Page", html)
+
+    def test_edit_user(self):
+        """Testing editing a given post"""
+
+        with app.test_client() as c:
+            resp = c.post(f'/posts/{self.post_id}/edit', data={
+                "title": "Testing this change",
+                "content": "testing content",
+                "user_id": self.user_id,
+            },
+            follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+
+            html = resp.get_data(as_text=True)
+            self.assertIn("Testing this change", html)
+            self.assertIn("testing content", html)
+            self.assertIn("This is to test we are in the Post Page", html)
+
+
+

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block content %}
+
+<h1> {{post.title}} </h1>
+
+<p>{{post.content}}</p>
+
+<i>By {{post.user.first_name}} {{post.user.last_name}}</i>
+
+<form>
+  <input
+    type="submit"
+    class="btn btn-outline-primary"
+    formaction="/users/{{ post.user.id }}"
+    formmethod="GET"
+    value="Cancel">
+
+  <input
+    type="submit"
+    class="btn btn-primary"
+    formaction="/posts/{{ post.id }}/edit"
+    formmethod="GET"
+    value="Edit">
+
+  <input
+    type="submit"
+    class="btn btn-danger"
+    formaction="/posts/{{ post.id }}/delete"
+    formmethod="POST"
+    value="Delete">
+
+</form>
+
+<!-- This is to test we are in the Post Page -->
+{% endblock %}
